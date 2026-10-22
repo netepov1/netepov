@@ -1,0 +1,39 @@
+
+import os
+import telebot
+
+TOKEN = os.getenv("BOT_TOKEN")
+
+if not TOKEN:
+    raise RuntimeError("Укажи BOT_TOKEN в настройках сервера")
+
+bot = telebot.TeleBot(TOKEN)
+
+@bot.message_handler(commands=["start"])
+def start(message):
+    bot.reply_to(
+        message,
+        "REPORT SYSTEM запущен.\n\n"
+        "Команды:\n"
+        "/help — помощь\n"
+        "/report — правила отправки жалобы"
+    )
+
+@bot.message_handler(commands=["help"])
+def help_command(message):
+    bot.reply_to(
+        message,
+        "Используй /report, чтобы узнать, "
+        "как отправить обоснованную жалобу."
+    )
+
+@bot.message_handler(commands=["report"])
+def report(message):
+    bot.reply_to(
+        message,
+        "Опиши нарушение и приложи ссылку "
+        "на сообщение или профиль. "
+        "Не отправляй личные данные посторонних."
+    )
+
+bot.infinity_polling()
